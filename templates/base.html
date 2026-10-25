@@ -1,0 +1,8 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{% block title %}Scholarship Portal{% endblock %}</title><link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"></head>
+<body><header class="topbar"><a class="brand" href="{{ url_for('index') }}"><span class="brand-mark">S</span><span>Scholarship<span class="brand-light">Portal</span></span></a><nav>
+{% if current_user %}
+{% if current_user.role == 'student' %}<a href="{{ url_for('student_dashboard') }}">Dashboard</a><a href="{{ url_for('apply') }}">New application</a><a href="{{ url_for('profile') }}">Profile</a>{% elif current_user.role == 'officer' %}<a href="{{ url_for('officer_dashboard') }}">Verification queue</a>{% else %}<a href="{{ url_for('admin_dashboard') }}">Admin dashboard</a><a href="{{ url_for('reports') }}">Reports</a>{% endif %}
+<a href="{{ url_for('notifications') }}">Notifications{% if unread_notifications %}<span class="badge">{{ unread_notifications }}</span>{% endif %}</a><a class="nav-logout" href="{{ url_for('logout') }}">Log out</a>
+{% else %}<a href="{{ url_for('login') }}">Log in</a><a class="nav-cta" href="{{ url_for('register') }}">Student registration</a>{% endif %}</nav></header>
+<main class="page">{% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}<div class="flash-stack">{% for category,message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}</div>{% endif %}{% endwith %}{% block content %}{% endblock %}</main><footer class="footer">Merit-cum-Means Scholarship · Application and Verification System</footer></body></html>
